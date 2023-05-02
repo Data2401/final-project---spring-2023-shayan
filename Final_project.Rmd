@@ -7,9 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-
-
 ```
 
 
@@ -17,15 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
-library('leaflet')
 library('dplyr')
 library('tidyr')
 library('ggplot2')
 library('plotly')
 library('tidyverse')
-library('lubridate')
-library("TSstudio")
-
 ```
 
 
@@ -53,16 +46,16 @@ sum(duplicated(customer_shopping))
 
 ### check data types
 ```{r}
-#check data type
 sapply(customer_shopping, class)
 
 
 ```
 
 
-### conver invoice_date data type from character to Date to be able to plot with the column
+### convert invoice_date data type from character to Date to be able to plot with the column
 ```{r}
 customer_shopping[['invoice_date']] = as.Date(customer_shopping[['invoice_date']], format = '%d/%m/%Y')
+
 sapply(customer_shopping, class)
 ```
 
@@ -72,7 +65,7 @@ summary(customer_shopping)
 ```
 
 
-### split data into 2 data sets for the years 2021 and 2022 by filtering
+### splitting data into 3 data sets 
 ```{r}
 
 customer_shopping <- customer_shopping %>% mutate(age_grp = ifelse(age < 10, "0's",
@@ -82,17 +75,16 @@ customer_shopping <- customer_shopping %>% mutate(age_grp = ifelse(age < 10, "0'
                               ifelse(age < 50, "40's",
                               ifelse(age < 60, "50's", "60's")))))))
 
-customer_shopping=customer_shopping %>% filter(invoice_date >= '2021-01-01' & invoice_date <= '2022-12-31')
+customer_shopping = customer_shopping %>% filter(invoice_date >= '2021-01-01' & invoice_date <= '2022-12-31')
 
 customer_shopping_2021 = customer_shopping %>% filter(invoice_date >= '2021-01-01' & invoice_date <= '2021-12-31')
 
 customer_shopping_2022 = customer_shopping %>% filter(invoice_date >= '2022-01-01' & invoice_date <= '2022-12-31')
 
 
-summary(customer_shopping_2021)
 ```
 
-#### categories
+#### checking category column for the different categories
 ```{r}
 unique(customer_shopping$category)
 ```
@@ -105,73 +97,107 @@ fspend = spending_by_cat %>% filter(gender=="Female")
 ```{r}
 spending_2021 = customer_shopping_2021 %>% group_by(invoice_date) %>%  summarise(sales = sum(price)) 
 
-spending_2021 %>% ggplot() + geom_line(aes(x=invoice_date, y=sales))+ labs(title="2021")
+spending_2021 %>% ggplot() + geom_line(aes(x=invoice_date, y=sales))+ labs(title="2021") + labs(title="2021")+xlab("Time Period")+ylab('Sales')
 
+```
+```{r}
 spending_2022 = customer_shopping_2022 %>% group_by(invoice_date) %>%  summarise(sales = sum(price))
 
-spending_2022 %>% ggplot() + geom_line(aes(x=invoice_date, y=sales))+ labs(title="2022")
+spending_2022 %>% ggplot() + geom_line(aes(x=invoice_date, y=sales)) + labs(title="2022")+xlab("Time Period")+ylab('Sales')
 ```
 
+
+
+### How much did people spend at each mall in 2021 and 2022 and how much by 
 ```{r}
 spend_cat_mall_2021 =  customer_shopping_2021 %>% select(category, shopping_mall, price)
 
-ggplot(data=spend_cat_mall_2021)+geom_col(mapping=aes(x=shopping_mall, y=price, fill=category)) + labs(title="2021")
+ggplot(data=spend_cat_mall_2021)+geom_col(mapping=aes(x=shopping_mall, y=price, fill=category)) + labs(title="2021") + theme(axis.text.x = element_text(angle = 90)) +xlab("Malls")+ylab('Spent')
 
 spend_cat_mall_2022 =  customer_shopping_2022 %>% select(category, shopping_mall, price)
 
-ggplot(data=spend_cat_mall_2022)+geom_col(mapping=aes(x=shopping_mall, y=price, fill=category)) + labs(title="2022")
+ggplot(data=spend_cat_mall_2022)+geom_col(mapping=aes(x=shopping_mall, y=price, fill=category)) + labs(title="2022")+ theme(axis.text.x = element_text(angle = 90)) +xlab("Malls")+ylab('Spent')
 
 
 ```
 
 
+
+### Are there any patterns in each category? 
 ```{r}
-cat = customer_shopping %>% group_by(category, invoice_date, price) %>% summarise(spending = sum(price)) 
-cat %>% ggplot() + geom_col(aes(x=invoice_date, y=spending, fill=category))+facet_wrap(~category)
+cat_2021 = customer_shopping_2021 %>% group_by(category, invoice_date, price) %>% summarise(spending = sum(price)) 
+cat_2021 %>% ggplot() + geom_col(aes(x=invoice_date, y=spending, fill=category))+facet_wrap(~category) + labs(title="2021")+ theme(axis.text.x = element_text(angle = 90)) +xlab("Timeline")+ylab('Spending')
+
+cat_2022 = customer_shopping_2022 %>% group_by(category, invoice_date, price) %>% summarise(spending = sum(price)) 
+cat_2022 %>% ggplot() + geom_col(aes(x=invoice_date, y=spending, fill=category))+facet_wrap(~category)+ labs(title="2022")+ theme(axis.text.x = element_text(angle = 90)) +xlab("Timeline")+ylab('Spending')
+
+
 ```
 
+
+
+### Let's take a look at clothing category for 2021. See any pattern?
+```{r}
+clothing_2021 = customer_shopping_2021 %>% group_by(category, invoice_date, price) %>% filter(category=="Clothing") %>%summarise(spending = sum(price)) 
+clothing_2021 %>% ggplot() + geom_line(aes(x=invoice_date, y=spending, color=category))+ labs(title="2021")+ theme(axis.text.x = element_text(angle = 90)) +xlab("Timeline")+ylab('Spending')
+
+```
+
+
+
+### Let's visualize the number of purchases by gender and age group
+```{r}
+gender_count= customer_shopping %>% group_by(gender, age_grp) %>% summarise(n =n())
+gender_count %>% ggplot() + geom_col(aes(x=gender, y=n, fill=age_grp)) +labs(title=" Number of Purchases by Genders and Age Groups")+xlab("Gender")+ylab('Number of Items')
+
+```
+
+
+
+###  Is there a relationship between gender and category?
 ```{r}
 age_gen = customer_shopping %>% group_by(category,gender) %>% summarise(n =n()) 
-age_gen %>% ggplot() + geom_col(aes(x=category, y=n, fill=gender)) + theme(axis.text.x = element_text(angle = 90))
+age_gen %>% ggplot() + geom_col(aes(x=category, y=n, fill=gender)) + theme(axis.text.x = element_text(angle = 90))+labs(title="Purchases by Gender")+xlab("Category")+ylab('Number of Purchases')
 
 
 ```
+
+
+
+### How about different age groups and categories
 ```{r}
 age_cat = customer_shopping %>% group_by(category,age_grp) %>% summarise(n =n()) 
-age_cat %>% ggplot() + geom_col(aes(x=age_grp, y=n, fill=age_grp)) + facet_wrap(~category)+theme(axis.text.x = element_text(angle = 90))
+age_cat %>% ggplot() + geom_col(aes(x=age_grp, y=n, fill=age_grp)) + facet_wrap(~category)+theme(axis.text.x = element_text(angle = 90)) + labs(title="Purchases by Age Group")+xlab("Category")+ylab('Number of Purchases')
 
 ```
 
+
+
+### Do certain demographics of people go to different malls for different categories of shopping
 ```{r}
 gender_mall_cat = customer_shopping %>% group_by(category, shopping_mall,gender) %>% summarise(n =n()) 
-gender_mall_cat %>% ggplot() + geom_col(aes(x=category, y=n, fill=gender))+facet_wrap(~shopping_mall) + theme(axis.text.x = element_text(angle = 90))
+gender_mall_cat %>% ggplot() + geom_col(aes(x=category, y=n, fill=gender))+facet_wrap(~shopping_mall) + theme(axis.text.x = element_text(angle = 90)) + labs(title="Mall Demographics by Gender")+xlab("Category")+ylab('Number of Purchases')
 
 ```
 
 
-```{r}
-gender_count= customer_shopping %>% group_by(gender) %>% summarise(n =n())
-gender_count %>% ggplot() + geom_col(aes(x=gender, y=n, fill=gender))
-```
-
-
-
-
-
-
+### Let's take age groups into account as well
 ```{r}
 age_mall = customer_shopping %>% group_by(age_grp ,shopping_mall, category) %>% summarise(n =n()) 
-age_mall %>% ggplot() + geom_col(aes(x=category, y=n, fill=age_grp))+facet_wrap(~shopping_mall) + theme(axis.text.x = element_text(angle = 90))
+age_mall %>% ggplot() + geom_col(aes(x=category, y=n, fill=age_grp))+facet_wrap(~shopping_mall) + theme(axis.text.x = element_text(angle = 90)) + labs(title="Mall Demographics by Gender and Age Groups")+xlab("Category")+ylab('Number of Purchases')
 
 ```
+
+
+
+
+### What about spending by age group?
 ```{r}
 age_spend = customer_shopping %>% group_by(age_grp ,price, gender) %>% summarise(spending = sum(price)) 
-age_spend %>% ggplot() + geom_col(aes(x=age_grp, y=spending, fill=gender))
+age_spend %>% ggplot() + geom_col(aes(x=age_grp, y=spending, fill=gender)) + labs(title="Spending vs Age Groups")+xlab("Age Groups")+ylab('Spending')
 
 ```
-```{r}
 
 
-```
 
 
