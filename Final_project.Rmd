@@ -1,0 +1,177 @@
+---
+title: "Final project"
+author: "Shayan Rahim"
+date: "2023-05-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+
+```
+
+
+
+
+
+```{r}
+library('leaflet')
+library('dplyr')
+library('tidyr')
+library('ggplot2')
+library('plotly')
+library('tidyverse')
+library('lubridate')
+library("TSstudio")
+
+```
+
+
+
+
+```{r}
+customer_shopping <- read.csv("customer_shopping_data.csv")
+glimpse(customer_shopping)
+
+```
+
+
+
+### check for missing data
+```{r}
+sum(is.na(customer_shopping))
+```
+
+
+### check for duplicated data
+```{r}
+sum(duplicated(customer_shopping))
+```
+
+
+### check data types
+```{r}
+#check data type
+sapply(customer_shopping, class)
+
+
+```
+
+
+### conver invoice_date data type from character to Date to be able to plot with the column
+```{r}
+customer_shopping[['invoice_date']] = as.Date(customer_shopping[['invoice_date']], format = '%d/%m/%Y')
+sapply(customer_shopping, class)
+```
+
+
+```{r}
+summary(customer_shopping)
+```
+
+
+### split data into 2 data sets for the years 2021 and 2022 by filtering
+```{r}
+
+customer_shopping <- customer_shopping %>% mutate(age_grp = ifelse(age < 10, "0's",
+                              ifelse(age < 20, "10's",
+                              ifelse(age < 30, "20's",
+                              ifelse(age < 40, "30's",
+                              ifelse(age < 50, "40's",
+                              ifelse(age < 60, "50's", "60's")))))))
+
+customer_shopping=customer_shopping %>% filter(invoice_date >= '2021-01-01' & invoice_date <= '2022-12-31')
+
+customer_shopping_2021 = customer_shopping %>% filter(invoice_date >= '2021-01-01' & invoice_date <= '2021-12-31')
+
+customer_shopping_2022 = customer_shopping %>% filter(invoice_date >= '2022-01-01' & invoice_date <= '2022-12-31')
+
+
+summary(customer_shopping_2021)
+```
+
+#### categories
+```{r}
+unique(customer_shopping$category)
+```
+
+cat_2021 = customer_shopping_2021 %>% group_by(category, gender) %>%  summarise(average_spending_by_cat_gen = mean(price))
+
+fspend = spending_by_cat %>% filter(gender=="Female") 
+
+
+```{r}
+spending_2021 = customer_shopping_2021 %>% group_by(invoice_date) %>%  summarise(sales = sum(price)) 
+
+spending_2021 %>% ggplot() + geom_line(aes(x=invoice_date, y=sales))+ labs(title="2021")
+
+spending_2022 = customer_shopping_2022 %>% group_by(invoice_date) %>%  summarise(sales = sum(price))
+
+spending_2022 %>% ggplot() + geom_line(aes(x=invoice_date, y=sales))+ labs(title="2022")
+```
+
+```{r}
+spend_cat_mall_2021 =  customer_shopping_2021 %>% select(category, shopping_mall, price)
+
+ggplot(data=spend_cat_mall_2021)+geom_col(mapping=aes(x=shopping_mall, y=price, fill=category)) + labs(title="2021")
+
+spend_cat_mall_2022 =  customer_shopping_2022 %>% select(category, shopping_mall, price)
+
+ggplot(data=spend_cat_mall_2022)+geom_col(mapping=aes(x=shopping_mall, y=price, fill=category)) + labs(title="2022")
+
+
+```
+
+
+```{r}
+cat = customer_shopping %>% group_by(category, invoice_date, price) %>% summarise(spending = sum(price)) 
+cat %>% ggplot() + geom_col(aes(x=invoice_date, y=spending, fill=category))+facet_wrap(~category)
+```
+
+```{r}
+age_gen = customer_shopping %>% group_by(category,gender) %>% summarise(n =n()) 
+age_gen %>% ggplot() + geom_col(aes(x=category, y=n, fill=gender)) + theme(axis.text.x = element_text(angle = 90))
+
+
+```
+```{r}
+age_cat = customer_shopping %>% group_by(category,age_grp) %>% summarise(n =n()) 
+age_cat %>% ggplot() + geom_col(aes(x=age_grp, y=n, fill=age_grp)) + facet_wrap(~category)+theme(axis.text.x = element_text(angle = 90))
+
+```
+
+```{r}
+gender_mall_cat = customer_shopping %>% group_by(category, shopping_mall,gender) %>% summarise(n =n()) 
+gender_mall_cat %>% ggplot() + geom_col(aes(x=category, y=n, fill=gender))+facet_wrap(~shopping_mall) + theme(axis.text.x = element_text(angle = 90))
+
+```
+
+
+```{r}
+gender_count= customer_shopping %>% group_by(gender) %>% summarise(n =n())
+gender_count %>% ggplot() + geom_col(aes(x=gender, y=n, fill=gender))
+```
+
+
+
+
+
+
+```{r}
+age_mall = customer_shopping %>% group_by(age_grp ,shopping_mall, category) %>% summarise(n =n()) 
+age_mall %>% ggplot() + geom_col(aes(x=category, y=n, fill=age_grp))+facet_wrap(~shopping_mall) + theme(axis.text.x = element_text(angle = 90))
+
+```
+```{r}
+age_spend = customer_shopping %>% group_by(age_grp ,price, gender) %>% summarise(spending = sum(price)) 
+age_spend %>% ggplot() + geom_col(aes(x=age_grp, y=spending, fill=gender))
+
+```
+```{r}
+
+
+```
+
+
