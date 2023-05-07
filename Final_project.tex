@@ -1,0 +1,426 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Diabetes Report},
+  pdfauthor={Shayan Rahim},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Diabetes Report}
+\author{Shayan Rahim}
+\date{2023-05}
+
+\begin{document}
+\maketitle
+
+\hypertarget{inroduction}{%
+\subsection{Inroduction}\label{inroduction}}
+
+\hypertarget{according-to-the-cdc-diabetes-is-one-of-the-most-common-chronic-diseases-that-people-have.-in-this-report-im-going-to-analyze-a-dataset-from-kaggle-which-was-orginally-from-the-national-institute-of-diabetes-and-digestive-and-kidney-diseases-in-maryland.-the-dataset-contains-data-fo-people-for-who-are-diabetic-and-who-arent.-the-dataset-contains-data-for-cholesterol-levels-systolic-and-diastolic-blood-pressure-glucose-levels-and-bmi-which-made-me-interested-in-the-dataset.-to-analyze-the-data-im-going-to-answer-the-question-what-facors-inncrease-the-likelihood-of-having-diabetes-by-anaylyzing-correlations-between-the-vitals-that-are-provided-in-the-dataset-and-diabeticenon-diabetic-persons.}{%
+\paragraph{\texorpdfstring{According to the
+\href{https://www.cdc.gov/chronicdisease/about/index.htm\#:~:text=Chronic\%20diseases\%20such\%20as\%20heart,disability\%20in\%20the\%20United\%20States.}{CDC}
+Diabetes is one of the most common chronic diseases that people have. In
+this report I'm going to analyze a dataset from Kaggle which was
+orginally from the National Institute of Diabetes and Digestive and
+Kidney Diseases in Maryland. The dataset contains data fo people for who
+are diabetic and who aren't. The dataset contains data for cholesterol
+levels, systolic and diastolic blood pressure, glucose levels, and bmi,
+which made me interested in the dataset. To analyze the data, I'm going
+to answer the question: what facors inncrease the likelihood of having
+diabetes, by anaylyzing correlations between the vitals that are
+provided in the dataset and diabetice/non-diabetic
+persons.}{According to the CDC Diabetes is one of the most common chronic diseases that people have. In this report I'm going to analyze a dataset from Kaggle which was orginally from the National Institute of Diabetes and Digestive and Kidney Diseases in Maryland. The dataset contains data fo people for who are diabetic and who aren't. The dataset contains data for cholesterol levels, systolic and diastolic blood pressure, glucose levels, and bmi, which made me interested in the dataset. To analyze the data, I'm going to answer the question: what facors inncrease the likelihood of having diabetes, by anaylyzing correlations between the vitals that are provided in the dataset and diabetice/non-diabetic persons.}}\label{according-to-the-cdc-diabetes-is-one-of-the-most-common-chronic-diseases-that-people-have.-in-this-report-im-going-to-analyze-a-dataset-from-kaggle-which-was-orginally-from-the-national-institute-of-diabetes-and-digestive-and-kidney-diseases-in-maryland.-the-dataset-contains-data-fo-people-for-who-are-diabetic-and-who-arent.-the-dataset-contains-data-for-cholesterol-levels-systolic-and-diastolic-blood-pressure-glucose-levels-and-bmi-which-made-me-interested-in-the-dataset.-to-analyze-the-data-im-going-to-answer-the-question-what-facors-inncrease-the-likelihood-of-having-diabetes-by-anaylyzing-correlations-between-the-vitals-that-are-provided-in-the-dataset-and-diabeticenon-diabetic-persons.}}
+
+\hypertarget{data-source}{%
+\paragraph{\texorpdfstring{\href{https://www.kaggle.com/datasets/houcembenmansour/predict-diabetes-based-on-diagnostic-measures}{Data
+source}}{Data source}}\label{data-source}}
+
+\#Libaries
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}dplyr\textquotesingle{}}\NormalTok{, }\AttributeTok{warn.conflicts =}\NormalTok{ F) }\CommentTok{\#for manipulating data frames}
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}tidyr\textquotesingle{}}\NormalTok{,}\AttributeTok{warn.conflicts =}\NormalTok{ F)  }\CommentTok{\#for tidying up data}
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}ggplot2\textquotesingle{}}\NormalTok{,}\AttributeTok{warn.conflicts =}\NormalTok{ F) }\CommentTok{\#for making graphs }
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{,}\AttributeTok{warn.conflicts =}\NormalTok{ F) }\CommentTok{\#for transforming and presenting data}
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}gridExtra\textquotesingle{}}\NormalTok{, }\AttributeTok{warn.conflicts =}\NormalTok{ F) }\CommentTok{\#for displaying tables}
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}kableExtra\textquotesingle{}}\NormalTok{,}\AttributeTok{warn.conflicts =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data}{%
+\section{Data}\label{data}}
+
+\hypertarget{i-downloaded-the-dataset-from-kaggle-which-came-in-a-zip-file-named-dibetes.zip-and-took-out-the-diabetes.csv-file-from-it-and-and-saved-it-to-the-folder-with-the-r-markdown-file.}{%
+\paragraph{I downloaded the dataset from kaggle which came in a zip file
+named dibetes.zip and took out the diabetes.csv file from it and and
+saved it to the folder with the R Markdown
+file.}\label{i-downloaded-the-dataset-from-kaggle-which-came-in-a-zip-file-named-dibetes.zip-and-took-out-the-diabetes.csv-file-from-it-and-and-saved-it-to-the-folder-with-the-r-markdown-file.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#importing data}
+\NormalTok{dbts }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"diabetes.csv"}\NormalTok{)}
+
+\CommentTok{\#Let\textquotesingle{}s look at the data}
+\FunctionTok{glimpse}\NormalTok{(dbts)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 390
+## Columns: 16
+## $ patient_number  <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,~
+## $ cholesterol     <int> 193, 146, 217, 226, 164, 170, 149, 164, 230, 179, 174,~
+## $ glucose         <int> 77, 79, 75, 97, 91, 69, 77, 71, 112, 105, 105, 106, 99~
+## $ hdl_chol        <int> 49, 41, 54, 70, 67, 64, 49, 63, 64, 60, 117, 63, 34, 7~
+## $ chol_hdl_ratio  <chr> "3,9", "3,6", "4", "3,2", "2,4", "2,7", "3", "2,6", "3~
+## $ age             <int> 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21~
+## $ gender          <chr> "female", "female", "female", "female", "female", "fem~
+## $ height          <int> 61, 60, 67, 64, 70, 64, 62, 72, 67, 58, 70, 68, 65, 63~
+## $ weight          <int> 119, 135, 187, 114, 141, 161, 115, 145, 159, 170, 187,~
+## $ bmi             <chr> "22,5", "26,4", "29,3", "19,6", "20,2", "27,6", "21", ~
+## $ systolic_bp     <int> 118, 108, 110, 122, 122, 108, 105, 108, 100, 140, 132,~
+## $ diastolic_bp    <int> 70, 58, 72, 64, 86, 70, 82, 78, 90, 100, 86, 110, 62, ~
+## $ waist           <int> 32, 33, 40, 31, 32, 37, 31, 29, 31, 34, 37, 49, 39, 28~
+## $ hip             <int> 38, 40, 45, 39, 39, 40, 37, 36, 39, 46, 41, 58, 43, 39~
+## $ waist_hip_ratio <chr> "0,84", "0,83", "0,89", "0,79", "0,82", "0,93", "0,84"~
+## $ diabetes        <chr> "No diabetes", "No diabetes", "No diabetes", "No diabe~
+\end{verbatim}
+
+\hypertarget{data-variables}{%
+\section{Data variables}\label{data-variables}}
+
+\hypertarget{patient_number-id-of-the-patient}{%
+\subparagraph{\texorpdfstring{\textbf{patient\_number}: ID of the
+patient}{patient\_number: ID of the patient}}\label{patient_number-id-of-the-patient}}
+
+\hypertarget{cholesterol-levels-of-cholesterol-in-blood-in}{%
+\subparagraph{\texorpdfstring{\textbf{cholesterol}: levels of
+cholesterol in blood
+in}{cholesterol: levels of cholesterol in blood in}}\label{cholesterol-levels-of-cholesterol-in-blood-in}}
+
+\hypertarget{glucose-levels-of-glucose-concentration-in-blood}{%
+\subparagraph{\texorpdfstring{\textbf{glucose}: levels of glucose
+concentration in
+blood}{glucose: levels of glucose concentration in blood}}\label{glucose-levels-of-glucose-concentration-in-blood}}
+
+\hypertarget{hdl_chol-level-of-high-density-lipoprotein-cholesterol}{%
+\subparagraph{\texorpdfstring{\textbf{hdl\_chol}: level of high-density
+lipoprotein
+cholesterol}{hdl\_chol: level of high-density lipoprotein cholesterol}}\label{hdl_chol-level-of-high-density-lipoprotein-cholesterol}}
+
+\hypertarget{chol_hdl_ratio-ratio-of-cholesterol-levels-to-high-density-lipoprotein-cholesterol-levels}{%
+\subparagraph{\texorpdfstring{\textbf{chol\_hdl\_ratio}: ratio of
+cholesterol levels to high-density lipoprotein cholesterol
+levels}{chol\_hdl\_ratio: ratio of cholesterol levels to high-density lipoprotein cholesterol levels}}\label{chol_hdl_ratio-ratio-of-cholesterol-levels-to-high-density-lipoprotein-cholesterol-levels}}
+
+\hypertarget{age-age-of-patient}{%
+\subparagraph{\texorpdfstring{\textbf{age}: age of
+patient}{age: age of patient}}\label{age-age-of-patient}}
+
+\hypertarget{gender-gender-of-patient}{%
+\subparagraph{\texorpdfstring{\textbf{gender}: gender of
+patient}{gender: gender of patient}}\label{gender-gender-of-patient}}
+
+\hypertarget{height-height-in-inches}{%
+\subparagraph{\texorpdfstring{\textbf{height}: height in
+inches}{height: height in inches}}\label{height-height-in-inches}}
+
+\hypertarget{weight-weight-in-pounds}{%
+\subparagraph{\texorpdfstring{\textbf{weight}: weight in
+pounds}{weight: weight in pounds}}\label{weight-weight-in-pounds}}
+
+\hypertarget{bmi-body-mass-index}{%
+\subparagraph{\texorpdfstring{\textbf{bmi}: body mass
+index}{bmi: body mass index}}\label{bmi-body-mass-index}}
+
+\hypertarget{systolic_bp-measure-of-pressure-in-arteries-when-heart-beats}{%
+\subparagraph{\texorpdfstring{\textbf{systolic\_bp}: measure of pressure
+in arteries when heart
+beats}{systolic\_bp: measure of pressure in arteries when heart beats}}\label{systolic_bp-measure-of-pressure-in-arteries-when-heart-beats}}
+
+\hypertarget{diastolic_bp-measure-of-pressure-in-arteries-when-heart-rests-between-beats}{%
+\subparagraph{\texorpdfstring{\textbf{diastolic\_bp}: measure of
+pressure in arteries when heart rests between
+beats}{diastolic\_bp: measure of pressure in arteries when heart rests between beats}}\label{diastolic_bp-measure-of-pressure-in-arteries-when-heart-rests-between-beats}}
+
+\hypertarget{waist-measure-of-waist-in-inches}{%
+\subparagraph{\texorpdfstring{\textbf{waist}: measure of waist in
+inches}{waist: measure of waist in inches}}\label{waist-measure-of-waist-in-inches}}
+
+\hypertarget{hip-measure-of-hip-in-inches}{%
+\subparagraph{\texorpdfstring{\textbf{hip}: measure of hip in
+inches}{hip: measure of hip in inches}}\label{hip-measure-of-hip-in-inches}}
+
+\hypertarget{waist_hip_ratio-ratio-of-waist-to-hip}{%
+\subparagraph{\texorpdfstring{\textbf{waist\_hip\_ratio}: ratio of waist
+to
+hip}{waist\_hip\_ratio: ratio of waist to hip}}\label{waist_hip_ratio-ratio-of-waist-to-hip}}
+
+\hypertarget{diabetes-whether-patient-has-diabetes-or-not}{%
+\subparagraph{\texorpdfstring{\textbf{diabetes}: whether patient has
+diabetes or
+not}{diabetes: whether patient has diabetes or not}}\label{diabetes-whether-patient-has-diabetes-or-not}}
+
+\hypertarget{diabetics-by-gender}{%
+\section{Diabetics by Gender}\label{diabetics-by-gender}}
+
+\hypertarget{i-wanted-to-first-look-at-the-number-of-people-who-were-diabetic-or-not-diabetic-by-age.-i-did-this-by-plotting-the-data-by-grouping-by-gender-and-diabetes-variabes-and-then-counting-the-number-of-people-who-are-and-arent-diabetic-in-the-dataset.}{%
+\paragraph{I wanted to first look at the number of people who were
+diabetic or not diabetic by age. I did this by plotting the data by
+grouping by gender and diabetes variabes and then counting the number of
+people who are and aren't diabetic in the
+dataset.}\label{i-wanted-to-first-look-at-the-number-of-people-who-were-diabetic-or-not-diabetic-by-age.-i-did-this-by-plotting-the-data-by-grouping-by-gender-and-diabetes-variabes-and-then-counting-the-number-of-people-who-are-and-arent-diabetic-in-the-dataset.}}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\hypertarget{the-graph-shows-that-the-gender-with-the-most-diabetic-people-are-females.-but-it-also-looks-like-that-theres-less-data-for-males-which-might-be-why-they-have-a-lower-count-of-diabetic-persons.-so-i-calculated-the-percentage-or-people-that-are-diabetic-for-each-gender-and-came-up-with-15.65-females-and-16.05-for-males-seen-in-the-table-below.-this-goes-to-show-that-diabetes-affect-males-and-females-in-almost-equal-percentages.}{%
+\paragraph{The graph shows that the gender with the most diabetic people
+are females. But it also looks like that there's less data for males,
+which might be why they have a lower count of diabetic persons. So, I
+calculated the percentage or people that are diabetic for each gender
+and came up with 15.65\% females and 16.05\% for males (Seen in the
+table below). This goes to show that diabetes affect males and females
+in almost equal
+percentages.}\label{the-graph-shows-that-the-gender-with-the-most-diabetic-people-are-females.-but-it-also-looks-like-that-theres-less-data-for-males-which-might-be-why-they-have-a-lower-count-of-diabetic-persons.-so-i-calculated-the-percentage-or-people-that-are-diabetic-for-each-gender-and-came-up-with-15.65-females-and-16.05-for-males-seen-in-the-table-below.-this-goes-to-show-that-diabetes-affect-males-and-females-in-almost-equal-percentages.}}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|l}
+\hline
+percent & gen\\
+\hline
+15.65 & Females\\
+\hline
+16.05 & Males\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{this-table-shows-the-precent-of-males-and-females-who-have-diabetese}{%
+\subsubsection{This table shows the precent of males and females who
+have
+diabetese}\label{this-table-shows-the-precent-of-males-and-females-who-have-diabetese}}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-6-1.pdf}
+It looks like as the population gets older, the percent of people having
+diabetes increasing but.
+
+Compare cholesterol for diabetic and non diabetic
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+\end{verbatim}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|r}
+\hline
+average\_diabetic\_cholesterol & average\_non\_diabetic\_cholesterol\\
+\hline
+228.6 & 203.3455\\
+\hline
+\end{tabular}
+\end{table}
+
+Compare hdl\_chol of diabetic and non diabtic
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|r}
+\hline
+average\_diabetic\_hdl\_cholesterol & average\_non\_diabetic\_hdl\_cholesterol\\
+\hline
+45.28333 & 51.17273\\
+\hline
+\end{tabular}
+\end{table}
+
+Average chol\_hdl\_ratio
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+Comparing Glucose
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|r}
+\hline
+average\_diabetic\_patient\_glucose\_level & average\_non\_diabetic\_patient\_glucose\_level\\
+\hline
+194.1667 & 91.55152\\
+\hline
+\end{tabular}
+\end{table}
+
+Systolic\_BP
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+\end{verbatim}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|r}
+\hline
+average\_diabetic\_patient\_systolic\_level & average\_non\_diabetic\_patient\_systolic\_level\\
+\hline
+147.7667 & 135.2\\
+\hline
+\end{tabular}
+\end{table}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+Diastolic\_BP
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dbts }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{group\_by}\NormalTok{(cholesterol, patient\_number, diastolic\_bp)  }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{patient\_number, }\AttributeTok{y=}\NormalTok{diastolic\_bp)) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}\FunctionTok{geom\_smooth}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{facet\_wrap}\NormalTok{(}\StringTok{\textquotesingle{}diabetes\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Patient Diastolic Blood Pressure{-}{-}Diabetic vs Non{-}Diabetic"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{xlab}\NormalTok{(}\StringTok{"Patient Number"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Diastolic BP Level"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+\end{verbatim}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#getting averages for diabetic and non diabetic diastoloc\_bp levels}
+\NormalTok{average\_diabetic\_patient\_diastolic\_level}\OtherTok{=}\FunctionTok{mean}\NormalTok{(db}\SpecialCharTok{$}\NormalTok{diastolic\_bp)}
+\NormalTok{average\_non\_diabetic\_patient\_diastolic\_level}\OtherTok{=}\FunctionTok{mean}\NormalTok{(non\_db}\SpecialCharTok{$}\NormalTok{diastolic\_bp)}
+
+\CommentTok{\#make a data frame of the averages }
+\NormalTok{average\_diastolic }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(average\_diabetic\_patient\_diastolic\_level, average\_non\_diabetic\_patient\_diastolic\_level)}
+
+\CommentTok{\#display the averages}
+
+\FunctionTok{ggplot}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{mean =} \FunctionTok{colMeans}\NormalTok{(average\_diastolic), }\AttributeTok{question =} \FunctionTok{names}\NormalTok{(average\_diastolic))) }\SpecialCharTok{+} 
+      \FunctionTok{geom\_col}\NormalTok{(}\FunctionTok{aes}\NormalTok{(question, mean), }\AttributeTok{fill=}\StringTok{\textquotesingle{}darkgreen\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Average Diastolic"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{xlab}\NormalTok{(}\StringTok{"Patient Type"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Average Diastolic BP "}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_project_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\end{document}

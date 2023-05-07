@@ -1,8 +1,10 @@
 ---
-title: "Final project"
+title: "Diabetes Report"
 author: "Shayan Rahim"
-date: "2023-05-01"
-output: html_document
+date: "2023-05"
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -10,32 +12,296 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-###### Data source: https://www.kaggle.com/datasets/mehmettahiraslan/customer-shopping-dataset
 
 
+## Inroduction
 
-```{r}
-library('dplyr')
-library('tidyr')
-library('ggplot2')
-library('plotly')
-library('tidyverse')
+#### [Data source](https://www.kaggle.com/datasets/houcembenmansour/predict-diabetes-based-on-diagnostic-measures)
+
+#### According to the [CDC](https://www.cdc.gov/chronicdisease/about/index.htm#:~:text=Chronic%20diseases%20such%20as%20heart,disability%20in%20the%20United%20States.) Diabetes is one of the most common chronic diseases that people have. In this report I'm going to analyze a dataset from Kaggle which was orginally from the National Institute of Diabetes and Digestive and Kidney Diseases in Maryland. The dataset contains data fo people for who are diabetic and who aren't. The dataset contains data for cholesterol levels, systolic and diastolic blood pressure, glucose levels, and bmi, which made me interested in the dataset. To analyze the data, I'm going to answer the question: what facors increase the likelihood of having diabetes, by anaylyzing correlations between the diagnostics that are provided in the dataset and diabetice/non-diabetic persons.
+
+# Questions
+### Main
+#### What facors increase the likelihood of having diabetes?
+### Other
+#### Is one gender affected more than other?
+#### Which ages are more affected by diabetes?
+#### Do diabetics have lower or higher levels of Cholesterol?
+#### How does hdl_chol of Diabetics compare to Non-Diabtics?
+#### How do Cholesterol to HDL Ratios compare for diabetics and non diabetics?
+#### How does Glucose compare for Diabetics and Non-Diabetics?
+#### How does Systolic Blood Pressure compare for Diabetics and Non-Diabetics?
+#### How does the average Daistolic Blood Pressure compare for Diabetics and Non-Diabetics?
+#### Is there a correlation between BMI and Glucose?
+#### What about Weight vs Glucose?
+
+
+# Libaries
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library('dplyr', warn.conflicts = F) #for manipulating data frames
+library('tidyr',warn.conflicts = F)  #for tidying up data
+library('ggplot2',warn.conflicts = F) #for making graphs 
+library('tidyverse',warn.conflicts = F) #for transforming and presenting data
+library('gridExtra', warn.conflicts = F) #for displaying tables
+library('kableExtra',warn.conflicts = FALSE)
 ```
 
 
+# Data
+#### I downloaded the dataset from kaggle which came in a zip file named dibetes.zip and took out the diabetes.csv file from it and and saved it to the folder with the R Markdown file.
 ```{r}
-customer_shopping <- read.csv("customer_shopping_data.csv")
+#importing data
+dbts <- read.csv("diabetes.csv")
+
+#Let's look at the data
+glimpse(dbts)
+
+```
+
+# Data variables
+#####  **patient_number**: ID of the patient
+#####  **cholesterol**: levels of cholesterol in blood in 
+#####  **glucose**: levels of glucose concentration in blood
+#####  **hdl_chol**: level of high-density lipoprotein cholesterol
+#####  **chol_hdl_ratio**: ratio of cholesterol levels to high-density lipoprotein cholesterol levels
+#####  **age**: age of patient
+#####  **gender**: gender of patient
+#####  **height**: height in inches
+#####  **weight**: weight in pounds
+#####  **bmi**: body mass index
+#####  **systolic_bp**: measure of pressure in arteries when heart beats
+#####  **diastolic_bp**: measure of pressure in arteries when heart rests between beats
+#####  **waist**: measure of waist in inches
+#####  **hip**: measure of hip in inches 
+#####  **waist_hip_ratio**: ratio of waist to hip
+#####  **diabetes**: whether patient has diabetes or not
+
+
+```{r,echo=FALSE, include=FALSE}
+#changing data type of bmi, waist_hip_ratio, and chol_hdl_ratio columns to numeric data type and replacing the commas with decimals
+dbts$bmi = scan(text=dbts$bmi, dec=",", sep=".")
+dbts$waist_hip_ratio = scan(text=dbts$waist_hip_ratio, dec=",", sep=".")
+dbts$chol_hdl_ratio = scan(text=dbts$chol_hdl_ratio, dec=",", sep=".")
+
+##checking for missing data in columns. 
+apply(is.na(dbts),2, sum)
 
 ```
 
 
 
+# Is one gender affected more than other?
+#### I wanted to first look at the number of people who were diabetic or not diabetic by gender. I did this by plotting the data by grouping by the gender and diabetes variabes and then counting the number of people who are and aren't diabetic in the dataset.
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+dbts %>% group_by(diabetes, gender) %>% summarize(n=n()) %>% ggplot(aes(x=gender, y=n, fill=diabetes)) + geom_col(position='dodge') + labs(title="Diabetic Patients")+xlab("Gender")+ylab("Number of People")+ geom_text(aes(label=n), vjust=1.5, position=position_dodge(.9))
+
+knitr::opts_chunk$set(warning = FALSE) 
+```
+
+
+#### The graph shows that the gender with the most diabetic people are females. But it also looks like that there's less data for males, which might be why they have a lower count of diabetic persons. So, I calculated the percentage or people that are diabetic for each gender and came up with 15.65% females and 16.05% for males (Seen in the table below). This goes to show that males are affected more by diabtes than females but only by a small margin.
+
+```{r,echo=FALSE, message=FALSE}
+percent = c(15.65,16.05)
+gen = c("Females", 'Males')
+percent_gen = data_frame(percent, gen)
+
+percent_gen %>% kbl() %>% kable_paper()  %>% scroll_box(height = "100px")
+```
+
+
+
+#### This table shows the precent of males and females who have diabetese
+
+
+# Which ages are more affected by diabetes?
+#### I then wanted to look at the data and see how age affects a person having diabetes. I did this by grouping the data by age diabetes variables and then plotted them into a columns charts
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ 
+dbts %>% group_by(age, diabetes) %>% summarize(n= n()) %>% ggplot() + geom_col(aes(x=age, y=n, fill=diabetes)) + labs(title="Diabteic vs Non-Diabetic")+xlab("Patient Age")+ylab("Number of Patients")
+
+knitr::opts_chunk$set(warning = FALSE) 
+```
+
+
+#### It looks like as the population gets older, the proportion of people having diabetes is increasing. It starts to increase especially around the age of 50.  
 
 
 
 
+# Do diabetics have lower or higher levels of Cholesterol?
+#### Here I wanted to see whether diabetic persons had lower or higher levels of cholesterol compared to non-diabetics and if there's a correlation between age and cholesterol levels. I did this by grouping by cholesterol and age variabes and then plotting the data by using geom_point, geom_smooth to see the moving average, and facet wrap to seperate diabetics from non-diabetics. 
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+dbts %>% group_by(cholesterol, age) %>% ggplot(aes(x=age, y=cholesterol)) + geom_point() +geom_smooth() + facet_wrap('diabetes') + labs(title="Diabetic Patient Cholesterol")+xlab("Patient Age")+ylab("Cholesterol Level")
+
+
+```
+
+#### As you can see, it looks like diabetics have, on average, higher levels of cholesterol. And as the age of the person increases, there cholesterol level are also likely to increase. I also made a table show the actual average cholesterol levels for diabetic and non diabetic, as you can see below.
+
+
+```{r,echo=FALSE}
+#filter the data into db for people with diabetes and no_db for people with no diabetes
+db = dbts %>% filter(diabetes=='Diabetes')
+non_db = dbts %>% filter(diabetes=='No diabetes')
+
+#getting averages for diabetic and non diabetic cholesterol to more clearly explain the graphs above
+average_diabetic_cholesterol=mean(db$cholesterol)
+average_non_diabetic_cholesterol=mean(non_db$cholesterol)
+#make a data fram of the averages
+average_cholesterol = data.frame(average_diabetic_cholesterol, average_non_diabetic_cholesterol)
+
+#make a table to display the averages
+average_cholesterol %>% kbl() %>% kable_paper()  %>% scroll_box(height = "100px")
+
+```
 
 
 
+# How does hdl_chol of Diabetics compare to Non-Diabtics?
+#### Then I wanted to compare the levels of HDL Cholesterol between diabetic and non diabetic. HDL (high-density lipoprotein) Cholesterol according to the [CDC](https://www.cdc.gov/cholesterol/ldl_hdl.htm#:~:text=HDL%20(high%2Ddensity%20lipoprotein),for%20heart%20disease%20and%20stroke.) is considered to be a "good" cholesterol, and having high levels of it is good, because HDL carries Cholesterol to the liver to get rid of, and higher levels of HDL Cholesterol means lower levels of Cholesterol.
+```{r, echo=FALSE}
+dbts %>% group_by(hdl_chol, age, diabetes) %>% ggplot(aes(x=age, y=hdl_chol)) + facet_wrap('diabetes') + geom_point()+geom_density_2d_filled()  + labs(title="HDL Cholesterol--Diabetic vs Non-Diabetic")+xlab("Patient Age ")+ylab("HDL Cholesterol Level") 
+
+```
+
+#### The graph clearly shows that people with Diabetes have lower levels of HDL Cholesterol, meaning they have higher levels of Cholesterol, which is confirmed by the CHolesterol to HDL Raios graph shown bloew . I also wanted to know the actual averages, so I made a table also showing them below. 
+
+
+
+```{r, echo=FALSE}
+#getting averages for diabetic and non diabetic hdl cholesterol 
+average_diabetic_hdl_cholesterol=mean(db$hdl_chol)
+average_non_diabetic_hdl_cholesterol=mean(non_db$hdl_chol)
+
+#make a data frame of the averages
+average_hdl_cholesterol = data.frame(average_diabetic_hdl_cholesterol, average_non_diabetic_hdl_cholesterol)
+
+#make a table to display the averages
+average_hdl_cholesterol %>% kbl() %>% kable_paper()  %>% scroll_box(height = "100px")
+
+```
+
+# Cholesterol to HDL Ratio
+```{r, echo=FALSE }
+#getting averages for diabetic and non diabetic chol_hdl_ratio
+average_diabetic_patient_cholesterol_hdl_ratio=mean(db$chol_hdl_ratio)
+average_non_diabetic_patient_cholesterol_hdl_ratio=mean(non_db$chol_hdl_ratio)
+
+#make a data frame of the averages
+average_cholesterol_hd_ratio = data.frame(average_diabetic_patient_cholesterol_hdl_ratio, average_non_diabetic_patient_cholesterol_hdl_ratio)
+
+#display the averages
+#grid.table(average_cholesterol_hd_ratio)
+
+ggplot(data.frame(mean = colMeans(average_cholesterol_hd_ratio), question = names(average_cholesterol_hd_ratio))) + 
+      geom_col(aes(question, mean), fill='skyblue') + labs(title="Average Cholesterol to HDL Ratios")+xlab("Patient Type")+ylab("Average Ratio") 
+
+```
+
+
+
+# How does Glucose compare for Diabetics and Non-Diabetics?
+
+```{r, echo=FALSE}
+#making graph for glucose, diabetic vs non diabetc
+dbts %>% group_by(glucose, age, diabetes) %>% ggplot(aes(x=patient_number, y=glucose)) + facet_wrap('diabetes') + geom_point()+geom_density_2d()  + labs(title="Patient Glucose Levels--Diabetic vs Non-Daibetic")+xlab("Patient Number")+ylab("Glucose Level")
+```
+
+#### Here we can see that glucose levels are significantly higher for people with diabetes compared to non-diabetics. We can conclude from this that glucuse plays a significant role in determining whether a peron has diabetes or not.
+
+
+#### This table shows the actual averages for glucoses levels in diabetics and non-diabetics.
+```{r, echo=FALSE}
+#getting averages for diabetic and non diabetic golucose levels
+average_diabetic_patient_glucose_level=mean(db$glucose)
+average_non_diabetic_patient_glucose_level=mean(non_db$glucose)
+
+#make a data frame of the averages 
+average_glucose = data.frame(average_diabetic_patient_glucose_level, average_non_diabetic_patient_glucose_level)
+
+#display the averages
+average_glucose %>% kbl() %>% kable_paper()  %>% scroll_box(height = "100px")
+
+```
+
+
+# How does Systolic Blood Pressure compare for Diabetics and Non-Diabetics?
+#### Here I wanted to compare Systolic Blood Pressure between Diabetics and Non-Diabetics as they aged. Accoring to the [CDC](https://www.cdc.gov/bloodpressure/about.htm#:~:text=The%20first%20number%2C%20called%20systolic,your%20heart%20rests%20between%20beats.)measures the pressure in your arteries when your heart beats. 
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+dbts %>% group_by(age, systolic_bp) %>% ggplot(aes(x=age, y=systolic_bp)) + geom_point()+geom_smooth() + facet_wrap('diabetes') + labs(title="Patient Systolic Blood Pressure--Diabetic vs Non-Diabetic")+xlab("Patient Age")+ylab("Systolic BP Level")
+```
+
+#### Here we can see that the moving average of Systolic Blood increases as people age, but sits a little higher for people who are diabetic, showing a correlation between being diabetic and having a high systolic bp. The table below confirms this statement by showing the average systolic bp for diabetics and non-diabetics
+
+```{r, echo=FALSE}
+#getting averages for diabetic and non diabetic systolic bp levels
+average_diabetic_patient_systolic_level=mean(db$systolic_bp)
+average_non_diabetic_patient_systolic_level=mean(non_db$systolic_bp)
+
+#make a data frame of the averages 
+average_systolic = data.frame(average_diabetic_patient_systolic_level, average_non_diabetic_patient_systolic_level)
+
+#display the averages
+average_systolic %>% kbl() %>% kable_paper()  %>% scroll_box(height = "100px")
+
+```
+
+# How does the average Daistolic Blood Pressure compare for Diabetics and Non-Diabetics?
+#### According to the [CDC](https://www.cdc.gov/bloodpressure/about.htm#:~:text=The%20first%20number%2C%20called%20systolic,your%20heart%20rests%20between%20beats.), measures the pressure in your arteries when your heart rests between beats. And this graph shows the average diastolic bp comapared to diabetic and non-diabetic.
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#getting averages for diabetic and non diabetic diastoloc_bp levels
+average_diabetic_patient_diastolic_level=mean(db$diastolic_bp)
+average_non_diabetic_patient_diastolic_level=mean(non_db$diastolic_bp)
+
+#make a data frame of the averages 
+average_diastolic = data.frame(average_diabetic_patient_diastolic_level, average_non_diabetic_patient_diastolic_level)
+
+#display the averages
+
+ggplot(data.frame(mean = colMeans(average_diastolic), question = names(average_diastolic))) + 
+      geom_col(aes(question, mean), fill='darkgreen') + labs(title="Average Diastolic")+xlab("Patient Type")+ylab("Average Diastolic BP ")
+
+```
+
+
+
+#### Here we don't see much diffrence between the averages for the two groups, which means that diastolic bp isn't correlated with a person being diabetics
+
+# Is there a correlation between BMI and Glucose?
+```{r, echo=FALSE, message=FALSE}
+dbts %>% group_by(waist_hip_ratio, bmi) %>% ggplot(aes(x=bmi, y=glucose)) + geom_point() +geom_density2d()+ facet_wrap('diabetes') + labs(title="BMI vs Glucose")+xlab("BMI")+ylab('Glucose Level')
+```
+
+
+#### This graph shows that for diabtic people, on average, their Waist_to_Hip_Raio is slightly higher than those how are not diabetic
+
+# What about Weight vs Glucose?
+```{r, echo=FALSE, message=FALSE}
+dbts %>% group_by(weight, glucose) %>% ggplot(aes(x=weight, y=glucose)) + geom_point()+geom_smooth() + facet_wrap('diabetes') + labs(title="Weight vs Glucose")+xlab("Weight (pounds)")+ylab('Glucose Level')
+
+```
+
+#### This graph shows that as diabetic people gain more weight, on average, their glucose levels rise faster than those who are not diabetic.
+
+# Average Weight
+#### Below, a table and a graph show the average weight of diabetic and non diabetic people.
+```{r, echo=FALSE, message=FALSE}
+#getting averages for diabetic and non diabetic diastoloc_bp levels
+average_diabetic_weight=mean(db$weight)
+average_non_diabetic_weight=mean(non_db$weight)
+
+#make a data frame of the averages 
+average_weight = data.frame(average_diabetic_weight,average_non_diabetic_weight)
+average_weight %>% kbl %>% kable_paper()  %>% scroll_box(height = "100px")   # not working for some reason
+ggplot(data.frame(mean = colMeans(average_weight), question = names(average_weight))) + 
+      geom_col(aes(question, mean), fill='lightpink') + labs(title="Average Weight by Type")+xlab("Patient Type")+ylab("Average Weight ")
+```
+
+#### These show that diabetic people weigh more on average than non-diabetic people, linking a higher a weight to diabetes. 
+
+# Summary 
+#####To summarize, diabetes is more common in middle-aged and older populations compared to younger, and affects the male demographic by 0.4% more than the female. Diabetics, on average, have higher levels of cholesterol compared to non-diabetics, which could be caused by a number of factors, but shows some correlation with higher age, which could provide one explanation that older populations are less active than younger ones, and hence the higher levels of cholesterol, especially in diabetics. Diabetics have on average higher cholesterol to HDL cholesterol ratios compared to non-diabetics, explaining the lower levels of HDL Cholesterol in diabetics. One thing that stood out to me the most was the very high levels of glucose diabetics had compared to their conterparts. And measuring glucose against weight and bmi, for diabetics vs non-diabetics, diabetics showed to have very high levels of glucose, which we can infer from is that high levels of glucose is are likely hindering their ability to maintain lower weight like non-diabetics. And lastly, also have on average higher levels of systolic blood pressure compared to non-diabetics. In, conclusion, if a person is a middle-aged or older male, has high cholesterol to hdl cholesterol ratio, high glucose levels, high weight, and high systolic blood pressure, they are more likely to have diabetes, compared to someone who the opposite of these stats.  
 
 
