@@ -296,7 +296,7 @@ average_non_diabetic_weight=mean(non_db$weight)
 average_weight = data.frame(average_diabetic_weight,average_non_diabetic_weight)
 average_weight %>% kbl %>% kable_paper()  %>% scroll_box(height = "100px")   # not working for some reason
 ggplot(data.frame(mean = colMeans(average_weight), question = names(average_weight))) + 
-      geom_col(aes(question, mean), fill='lightpink') + labs(title="Average Weight by Type")+xlab("Patient Type")+ylab("Average Weight ")
+      geom_col(aes(question, mean), fill='lightpink') + labs(title="Average Weight by Type")+xlab("Patient Type")+ylab("Average Weight (pounds)")
 ```
 
 #### These show that diabetic people weigh more on average than non-diabetic people, linking a higher a weight to diabetes. 
